@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Is This a Scam? &middot; A simple, private check</title>
+<meta name="description" content="A free, private step-by-step check to help you tell whether a call, text, email, or message is likely to be a scam.">
+<link rel="canonical" href="https://scamadvise.me/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Scam Advise">
+<meta property="og:title" content="Is This a Scam? A free, private check">
+<meta property="og:description" content="Answer a few simple questions and get a clear risk rating on any call, text, email, or message.">
+<meta property="og:url" content="https://scamadvise.me/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Is This a Scam? A free, private check">
+<meta name="twitter:description" content="Answer a few simple questions and get a clear risk rating on any suspicious message.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F2E9;
+    --paper-2:#EFE9DC;
+    --surface:#FFFDF8;
+    --ink:#22303C;
+    --ink-soft:#4C5A66;
+    --ink-faint:#7A8690;
+    --line:#E3DBCB;
+    --line-strong:#D3C9B4;
+    --brand:#0E7C6B;
+    --brand-deep:#0A5C50;
+    --brand-tint:#E3F1ED;
+    --focus:#1763B6;
+
+    /* danger scale */
+    --safe:#2E9E5B;
+    --amber:#E0A52B;
+    --orange:#E0712E;
+    --red:#CE4040;
+
+    --shadow:0 1px 2px rgba(34,48,60,.05), 0 10px 30px -12px rgba(34,48,60,.18);
+    --shadow-soft:0 1px 2px rgba(34,48,60,.05), 0 4px 14px -8px rgba(34,48,60,.16);
+    --radius:18px;
+    --radius-sm:12px;
+    --maxw:680px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(1200px 600px at 50% -10%, #FBF8F1 0%, rgba(251,248,241,0) 60%),
+      radial-gradient(900px 500px at 110% 0%, var(--brand-tint) 0%, rgba(227,241,237,0) 55%);
+    color:var(--ink);
+    font-family:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    letter-spacing:.005em;
+  }
+  /* faint paper grain overlay */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:22px 20px 8px;
+    flex:1 0 auto;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- header ---------- */
+  header.site{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;}
+  .mainnav{display:flex;align-items:center;gap:6px;}
+  .mainnav a{
+    text-decoration:none;font-weight:700;font-size:.96rem;color:var(--ink-soft);
+    padding:9px 14px;border-radius:10px;border:1px solid transparent;
+    transition:color .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .mainnav a:hover{color:var(--ink);background:rgba(255,253,248,.7);border-color:var(--line);}
+  .mainnav a.active{color:var(--brand-deep);background:var(--brand-tint);border-color:#CDE6DF;}
+  .mainnav a:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+  .mark{
+    flex:0 0 auto;
+    width:46px;height:46px;
+    border-radius:13px;
+    background:linear-gradient(160deg,var(--brand) 0%, var(--brand-deep) 100%);
+    display:grid;place-items:center;
+    box-shadow:var(--shadow-soft);
+  }
+  .mark svg{width:26px;height:26px;display:block;}
+  .site h1{
+    font-family:"Fraunces", Georgia, "Times New Roman", serif;
+    font-weight:600;
+    font-size:1.5rem;
+    line-height:1.05;
+    margin:0;
+    letter-spacing:-.01em;
+  }
+  .site .tag{
+    margin:2px 0 0;
+    font-size:.82rem;
+    color:var(--ink-faint);
+    letter-spacing:.01em;
+  }
+
+  /* ---------- progress ---------- */
+  .progress{
+    height:7px;
+    width:100%;
+    background:var(--paper-2);
+    border-radius:999px;
+    overflow:hidden;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.03);
+    margin-bottom:20px;
+  }
+  .progress > i{
+    display:block;
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--brand) 0%, #18A18C 100%);
+    transition:width .45s cubic-bezier(.22,.61,.36,1);
+  }
+
+  /* ---------- card / screen ---------- */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:30px 28px 28px;
+  }
+  @keyframes enter{
+    from{opacity:0; transform:translateY(10px) scale(.995);}
+    to{opacity:1; transform:none;}
+  }
+  .screen{animation:enter .3s cubic-bezier(.22,.61,.36,1);}
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:.74rem;
+    text-transform:uppercase;
+    letter-spacing:.13em;
+    font-weight:700;
+    color:var(--brand-deep);
+    background:var(--brand-tint);
+    border:1px solid #CDE6DF;
+    padding:6px 11px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .qtext{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    font-size:1.62rem;
+    line-height:1.2;
+    letter-spacing:-.012em;
+    margin:0 0 8px;
+  }
+  .help{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:0 0 22px;
+    line-height:1.5;
+  }
+  .help.tight{margin-bottom:18px;}
+
+  /* ---------- option buttons ---------- */
+  .options{display:flex;flex-direction:column;gap:12px;margin-top:6px;}
+  .opt{
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
+    text-align:left;
+    width:100%;
+    min-height:60px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 18px;
+    font-family:inherit;
+    font-size:1.06rem;
+    font-weight:700;
+    color:var(--ink);
+    background:var(--surface);
+    border:1.5px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    transition:transform .12s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .opt .lab{flex:1 1 auto;}
+  .opt .chev{
+    flex:0 0 auto;
+    width:22px;height:22px;
+    color:var(--ink-faint);
+    transition:transform .15s ease, color .15s ease;
+  }
+  .opt:hover{
+    border-color:var(--brand);
+    background:#FBFEFD;
+    box-shadow:0 6px 18px -12px rgba(14,124,107,.5);
+  }
+  .opt:hover .chev{transform:translateX(3px);color:var(--brand);}
+  .opt:active{transform:translateY(1px) scale(.997);}
+  .opt:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+
+  /* ---------- back / nav ---------- */
+  .nav{
+    display:flex;
+    align-items:center;
+    margin-top:22px;
+  }
+  .back{
+    appearance:none;-webkit-appearance:none;
+    cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;
+    background:none;border:none;
+    font-family:inherit;font-size:.98rem;font-weight:700;
+    color:var(--ink-soft);
+    padding:8px 6px;border-radius:8px;
+  }
+  .back svg{width:18px;height:18px;}
+  .back:hover{color:var(--ink);}
+  .back:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+
+  /* ---------- intro ---------- */
+  .intro-lead{
+    font-size:1.08rem;color:var(--ink-soft);margin:0 0 22px;line-height:1.55;
+  }
+  .intro-points{list-style:none;margin:0 0 26px;padding:0;display:flex;flex-direction:column;gap:12px;}
+  .intro-points li{display:flex;gap:12px;align-items:flex-start;font-size:1rem;color:var(--ink);}
+  .intro-points .ic{
+    flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--brand-tint);
+    display:grid;place-items:center;color:var(--brand-deep);
+  }
+  .intro-points .ic svg{width:17px;height:17px;}
+  .cta{
+    appearance:none;-webkit-appearance:none;cursor:pointer;
+    width:100%;min-height:64px;
+    font-family:inherit;font-size:1.18rem;font-weight:700;letter-spacing:.005em;
+    color:#fff;
+    background:linear-gradient(160deg,var(--brand) 0%, var(--brand-deep) 100%);
+    border:none;border-radius:14px;
+    box-shadow:0 12px 26px -12px rgba(10,92,80,.7);
+    transition:transform .12s ease, box-shadow .15s ease, filter .15s ease;
+  }
+  .cta:hover{filter:brightness(1.04);box-shadow:0 16px 30px -12px rgba(10,92,80,.75);}
+  .cta:active{transform:translateY(1px);}
+  .cta:focus-visible{outline:3px solid var(--focus);outline-offset:3px;}
+
+  /* ---------- result ---------- */
+  .verdict{
+    border-radius:var(--radius-sm);
+    border:1px solid var(--vd-line, var(--line));
+    background:var(--vd-bg,#fff);
+    padding:20px 20px 22px;
+    margin-bottom:22px;
+  }
+  .verdict .band-eyebrow{
+    font-size:.74rem;text-transform:uppercase;letter-spacing:.13em;font-weight:700;
+    color:var(--vd-ink,var(--ink-soft));opacity:.85;margin-bottom:8px;
+  }
+  .verdict h2{
+    font-family:"Fraunces",Georgia,serif;font-weight:700;
+    font-size:1.5rem;line-height:1.12;margin:0 0 6px;color:var(--vd-ink,var(--ink));
+    letter-spacing:-.01em;
+  }
+  .verdict p{margin:0;color:var(--ink-soft);font-size:1.02rem;line-height:1.5;}
+
+  .meter-wrap{margin:18px 0 4px;}
+  .meter-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+  .meter-top .score{
+    font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:1.7rem;line-height:1;color:var(--vd-ink,var(--ink));
+  }
+  .meter-top .score small{font-size:.86rem;font-weight:600;color:var(--ink-faint);font-family:inherit;}
+  .meter-top .of{font-size:.82rem;color:var(--ink-faint);}
+  .meter{
+    position:relative;height:16px;border-radius:999px;overflow:visible;
+    background:linear-gradient(90deg,var(--safe) 0%, #8FBE3C 32%, var(--amber) 55%, var(--orange) 76%, var(--red) 100%);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);
+  }
+  .meter .pin{
+    position:absolute;top:50%;left:0%;
+    width:0;height:0;
+    transition:left .9s cubic-bezier(.22,.61,.36,1);
+  }
+  .meter .pin::after{
+    content:"";position:absolute;top:-50%;left:0;transform:translate(-50%,-50%);
+    width:26px;height:26px;border-radius:50%;
+    background:#fff;border:4px solid var(--vd-accent,var(--ink));
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  .meter-labels{display:flex;justify-content:space-between;margin-top:10px;font-size:.8rem;color:var(--ink-faint);}
+
+  .res-section{margin-top:24px;}
+  .res-section h3{
+    font-family:inherit;font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;
+    font-weight:700;color:var(--ink-faint);margin:0 0 12px;
+  }
+  ul.findings{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  ul.findings li{display:flex;gap:12px;align-items:flex-start;font-size:1rem;line-height:1.45;}
+  ul.findings .dot{
+    flex:0 0 auto;margin-top:.45em;width:9px;height:9px;border-radius:50%;background:var(--ink-faint);
+  }
+  ul.findings li.crit .dot{background:var(--red);}
+  ul.findings li.high .dot{background:var(--orange);}
+  ul.findings li.med .dot{background:var(--amber);}
+  ul.findings li.good .dot{background:var(--safe);}
+  ul.findings li.good{color:var(--brand-deep);font-weight:700;}
+
+  ul.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;}
+  ul.actions li{
+    display:flex;gap:12px;align-items:flex-start;font-size:1.02rem;line-height:1.5;
+    background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:13px 15px;
+  }
+  ul.actions .ic{flex:0 0 auto;width:24px;height:24px;color:var(--brand-deep);}
+  ul.actions .ic svg{width:24px;height:24px;}
+  ul.actions li.key{background:#FCEEEA;border-color:#F0CFC6;}
+  ul.actions li.key .ic{color:var(--red);}
+
+  .disclaimer{
+    margin-top:24px;font-size:.9rem;color:var(--ink-faint);line-height:1.5;
+    border-top:1px dashed var(--line-strong);padding-top:16px;
+  }
+  .result-buttons{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;}
+  .btn-secondary{
+    appearance:none;-webkit-appearance:none;cursor:pointer;flex:1 1 auto;min-height:58px;
+    font-family:inherit;font-size:1.05rem;font-weight:700;color:var(--brand-deep);
+    background:var(--surface);border:1.5px solid var(--brand);border-radius:13px;
+    transition:background .15s ease, transform .12s ease;
+  }
+  .btn-secondary:hover{background:var(--brand-tint);}
+  .btn-secondary:active{transform:translateY(1px);}
+  .btn-secondary:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+
+  /* ---------- footer ---------- */
+  footer.site{
+    position:relative;z-index:1;
+    width:100%;max-width:var(--maxw);margin:0 auto;
+    padding:26px 20px 30px;
+    flex-shrink:0;
+  }
+  .privacy{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:.86rem;color:var(--ink-soft);line-height:1.45;margin-bottom:18px;
+  }
+  .privacy svg{flex:0 0 auto;width:18px;height:18px;color:var(--brand);margin-top:.15em;}
+  .foot-links{display:flex;gap:10px;flex-wrap:wrap;}
+  a.soon{
+    flex:1 1 200px;
+    text-decoration:none;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    padding:14px 16px;border-radius:12px;
+    border:1px dashed var(--line-strong);background:rgba(255,253,248,.5);
+    color:var(--ink-faint);font-size:.95rem;font-weight:700;letter-spacing:.02em;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  a.soon:hover{border-color:var(--line-strong);background:var(--surface);}
+  a.soon:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+  a.soon .pill{
+    flex:0 0 auto;font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;
+    color:var(--brand-deep);background:var(--brand-tint);border:1px solid #CDE6DF;
+    padding:4px 9px;border-radius:999px;
+  }
+  .foot-fine{margin-top:16px;font-size:.78rem;color:var(--ink-faint);text-align:center;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:520px){
+    body{font-size:18px;}
+    .wrap{padding:16px 14px 6px;}
+    .card{padding:24px 18px 22px;border-radius:16px;}
+    .qtext{font-size:1.4rem;}
+    .site h1{font-size:1.32rem;}
+    .opt{font-size:1.02rem;padding:15px 15px;}
+    .foot-links{flex-direction:column;}
+  }
+  @media (max-width:360px){
+    .qtext{font-size:1.28rem;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <a class="brand" href="index.html">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Is This a Scam?</h1>
+          <p class="tag">A simple, private check</p>
+        </div>
+      </a>
+      <nav class="mainnav" aria-label="Main">
+        <a href="index.html" class="active" aria-current="page">Home</a>
+        <a href="how-to-spot-a-scam.html">Guide</a>
+      </nav>
+    </header>
+
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+
+    <main id="app" aria-live="polite"></main>
+  </div>
+
+  <footer class="site">
+    <p class="privacy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span>This check runs entirely on your device. Nothing you tap or type is saved, tracked, or sent anywhere.</span>
+    </p>
+    <div class="foot-links">
+      <a class="soon" href="#" data-soon role="link" aria-disabled="true" aria-label="Coming soon">Coming soon</a>
+      <a class="soon" href="#" data-soon role="link" aria-disabled="true" aria-label="Coming soon">Coming soon</a>
+    </div>
+    <p class="foot-fine">Free to use &middot; Guidance only, not a guarantee &middot; If in doubt, treat it as a scam until you have checked.</p>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     QUESTION BANK
+     Each option: { label, points, flags:[], critical:true? }
+     Positive points = more risk. Negative points = reassuring.
+     ============================================================ */
+
+  var ALLOWED_LINK_CHANNELS = ["text","email","social","website"];
+
+  // Triage 1: how were you contacted
+  var CHANNELS = [
+    {value:"call",     label:"A phone call"},
+    {value:"text",     label:"A text message"},
+    {value:"email",    label:"An email"},
+    {value:"social",   label:"Social media or a dating / messaging app"},
+    {value:"website",  label:"A website, online shop, or a pop-up on my screen"},
+    {value:"inperson", label:"In person, at my door, or by mail"},
+    {value:"notsure",  label:"I'm not sure"}
+  ];
+
+  // Triage 2: who do they claim to be
+  var WHO = [
+    {value:"government", label:"A government agency (tax office, social security, police, courts)"},
+    {value:"bank",       label:"My bank, card company, or a payment app"},
+    {value:"tech",       label:"A technology company (Microsoft, Apple, antivirus, etc.)"},
+    {value:"delivery",   label:"A delivery service, post, or a toll / parking notice"},
+    {value:"family",     label:"A family member or a friend"},
+    {value:"romance",    label:"Someone I met online, or a romantic interest"},
+    {value:"offer",      label:"A company offering a prize, a job, or an investment"},
+    {value:"charity",    label:"A charity asking for a donation"},
+    {value:"known",      label:"Someone I already know in real life"},
+    {value:"unknown",    label:"They didn't say, or I'm not sure"}
+  ];
+
+  var Q = {
+    /* ---- universal red flags ---- */
+    unexpected:{
+      text:"Did this contact come out of the blue, when you weren't expecting it?",
+      options:[
+        {label:"Yes, it was completely unexpected", points:15, flags:["unexpected"]},
+        {label:"No, I contacted them first, or I was expecting it", points:0},
+        {label:"I'm not sure", points:8, flags:["unexpected"]}
+      ]
+    },
+    urgency:{
+      text:"Are they pressuring you to act right now, or telling you not to hang up or not to wait?",
+      options:[
+        {label:"Yes, they want me to act immediately", points:22, flags:["urgency"]},
+        {label:"A little, but no real pressure", points:12},
+        {label:"No pressure at all", points:0}
+      ]
+    },
+    threats:{
+      text:"Are they threatening you in some way?",
+      help:"For example: arrest, deportation, fines, losing a benefit, or closing your account.",
+      options:[
+        {label:"Yes, there is a threat or a scary consequence", points:22, flags:["threats"]},
+        {label:"No threats", points:0}
+      ]
+    },
+    personalinfo:{
+      text:"Did they ask you for sensitive information?",
+      help:"Such as your ID or social security number, passwords, bank login, full card number, or a security code / one-time passcode they asked you to read back.",
+      options:[
+        {label:"Yes, including a code or one-time passcode to read back", points:40, critical:true, flags:["otp"]},
+        {label:"Yes, other personal or financial details", points:22, flags:["personal_info"]},
+        {label:"No", points:0}
+      ]
+    },
+    remote:{
+      text:"Did they ask to connect to or control your computer or phone, or to install something so they can get in?",
+      options:[
+        {label:"Yes", points:40, critical:true, flags:["remote_access"]},
+        {label:"No", points:0}
+      ]
+    },
+    links:{
+      text:"Did they send a link or attachment and ask you to click, open, download, or type your details into it?",
+      options:[
+        {label:"Yes", points:18, flags:["link"]},
+        {label:"No", points:0}
+      ]
+    },
+    toogood:{
+      text:"Does this involve a prize, a refund, or money you didn't expect that sounds too good to be true?",
+      options:[
+        {label:"Yes", points:22, flags:["too_good"]},
+        {label:"No", points:0}
+      ]
+    },
+    payment:{
+      text:"Are they asking you to pay or send money in any of these ways?",
+      help:"Gift cards, wire transfer, cryptocurrency, a payment app (such as Zelle, Venmo, Cash App), cash by mail, or gold.",
+      options:[
+        {label:"Yes, one of those ways", points:40, critical:true, flags:["payment_untraceable"]},
+        {label:"No, or a normal card payment on a site I trust", points:0},
+        {label:"They haven't asked for money yet", points:0},
+        {label:"I'm not sure", points:15, flags:["payment_unsure"]}
+      ]
+    },
+    secrecy:{
+      text:"Did they tell you to keep this private, or not to tell your family, your bank, or the police?",
+      options:[
+        {label:"Yes", points:40, critical:true, flags:["secrecy"]},
+        {label:"No", points:0}
+      ]
+    },
+    verify:{
+      text:"Have you checked who they really are by contacting the organization or person yourself?",
+      help:"Using a phone number or website you found on your own, not one they gave you.",
+      options:[
+        {label:"Yes, and the real organization or person confirmed it is genuine", points:-25, flags:["verified"]},
+        {label:"No, I haven't checked on my own yet", points:15, flags:["unverified"]},
+        {label:"I only used the number or link they gave me", points:20, flags:["used_their_contact"]}
+      ]
+    },
+
+    /* ---- scenario specific ---- */
+    gov_safeaccount:{
+      text:"Are they telling you to move your money to a \u201Csafe\u201D account, or to withdraw cash or buy gold to protect it?",
+      options:[
+        {label:"Yes", points:40, critical:true, flags:["safe_account"]},
+        {label:"No", points:0}
+      ]
+    },
+    bank_safeaccount:{
+      text:"Are they telling you to move your money to a \u201Csafe\u201D or \u201Cprotected\u201D account, or to withdraw cash to keep it safe?",
+      options:[
+        {label:"Yes", points:40, critical:true, flags:["safe_account"]},
+        {label:"No", points:0}
+      ]
+    },
+    tech_popup:{
+      text:"Did a pop-up, call, or message claim your device has a virus or was hacked, and tell you to call a number or let them in to fix it?",
+      options:[
+        {label:"Yes", points:22, flags:["tech_popup"]},
+        {label:"No", points:0}
+      ]
+    },
+    delivery_expecting:{
+      text:"Were you actually expecting this delivery, or do you have a toll or fee you know is unpaid?",
+      options:[
+        {label:"No, this is unexpected", points:22, flags:["delivery_unexpected"]},
+        {label:"Yes, I was expecting it", points:0},
+        {label:"I'm not sure", points:12, flags:["delivery_unexpected"]}
+      ]
+    },
+    delivery_pay:{
+      text:"Does the message ask for a payment or your card details to release a package or pay a toll?",
+      options:[
+        {label:"Yes", points:25, flags:["delivery_pay"]},
+        {label:"No", points:0}
+      ]
+    },
+    family_emergency:{
+      text:"Do they say they are in trouble and need money quickly?",
+      help:"For example an accident, an arrest, a hospital bill, or being stranded somewhere.",
+      options:[
+        {label:"Yes", points:22, flags:["family_emergency"]},
+        {label:"No", points:0}
+      ]
+    },
+    family_voice:{
+      text:"Did the voice, or the way they wrote, seem a little off, or not quite like them?",
+      options:[
+        {label:"Yes, something felt off", points:15, flags:["voice_off"]},
+        {label:"No, it seemed like them", points:0},
+        {label:"Hard to tell", points:8}
+      ]
+    },
+    family_reach:{
+      text:"Have you tried to reach the real person directly, on the number you already have for them?",
+      options:[
+        {label:"Yes, I reached them and they are fine", points:-25, flags:["reached_person"]},
+        {label:"No, I haven't tried yet", points:18, flags:["didnt_reach_person"]},
+        {label:"I tried but couldn't reach them", points:12, flags:["couldnt_reach"]}
+      ]
+    },
+    romance_met:{
+      text:"Have you ever met this person in real life, or on a live video call?",
+      options:[
+        {label:"No, never", points:22, flags:["never_met"]},
+        {label:"Only on video, never in person", points:10},
+        {label:"Yes, in person", points:0}
+      ]
+    },
+    romance_avoid:{
+      text:"Have they repeatedly made excuses to avoid meeting in person or on a live video call?",
+      options:[
+        {label:"Yes", points:22, flags:["avoids_meeting"]},
+        {label:"No", points:0}
+      ]
+    },
+    romance_money:{
+      text:"Are they asking you for money, gift cards, or help moving or investing funds?",
+      options:[
+        {label:"Yes", points:40, critical:true, flags:["romance_money"]},
+        {label:"No, not so far", points:0}
+      ]
+    },
+    offer_entered:{
+      text:"Did you actually enter this contest, or apply for this job or investment yourself?",
+      options:[
+        {label:"No, it came to me unprompted", points:22, flags:["didnt_enter"]},
+        {label:"Yes, I started it myself", points:0}
+      ]
+    },
+    offer_payto:{
+      text:"Do you have to pay a fee, taxes, or buy something first to claim the prize, start the job, or invest?",
+      options:[
+        {label:"Yes", points:30, flags:["pay_to_get"]},
+        {label:"No", points:0}
+      ]
+    },
+    offer_returns:{
+      text:"Are they promising guaranteed or unusually high returns, or money that sounds too good to be true?",
+      options:[
+        {label:"Yes", points:22, flags:["guaranteed_returns"]},
+        {label:"No", points:0}
+      ]
+    },
+    charity_unsolicited:{
+      text:"Did they contact you first asking for a donation, and are they pushing you to give right now?",
+      options:[
+        {label:"Yes", points:18, flags:["charity_pressure"]},
+        {label:"No", points:0}
+      ]
+    },
+    known_channel:{
+      text:"Are they reaching you from their usual phone number or account, or from a new or different one?",
+      options:[
+        {label:"A new or different number or account", points:22, flags:["new_account"]},
+        {label:"Their usual one", points:0},
+        {label:"I'm not sure", points:12, flags:["new_account"]}
+      ]
+    },
+    known_unusual:{
+      text:"Are they asking for money, gift cards, or personal information, which is unusual for them?",
+      options:[
+        {label:"Yes, it is unusual for them", points:22, flags:["unusual_request"]},
+        {label:"No", points:0}
+      ]
+    }
+  };
+
+  /* ordered question flow per scenario (after the two triage questions) */
+  var SCENARIO_QUEUES = {
+    government:["unexpected","gov_safeaccount","urgency","threats","personalinfo","payment","secrecy","verify"],
+    bank:["unexpected","bank_safeaccount","urgency","personalinfo","remote","payment","secrecy","verify"],
+    tech:["unexpected","tech_popup","urgency","remote","personalinfo","payment","secrecy","verify"],
+    delivery:["delivery_expecting","delivery_pay","urgency","links","personalinfo","payment","verify"],
+    family:["family_emergency","urgency","family_voice","family_reach","payment","secrecy","verify"],
+    romance:["romance_met","romance_avoid","romance_money","urgency","personalinfo","secrecy","verify"],
+    offer:["offer_entered","offer_payto","offer_returns","urgency","personalinfo","payment","verify"],
+    charity:["charity_unsolicited","unexpected","urgency","payment","personalinfo","verify"],
+    known:["known_channel","known_unusual","payment","secrecy","verify"],
+    unknown:["unexpected","urgency","threats","personalinfo","remote","links","payment","secrecy","verify"]
+  };
+
+  /* ============================================================
+     FLAG MEANINGS  -> what we noticed + what to do
+     level: 0 critical, 1 high, 2 medium, 3 good
+     ============================================================ */
+  var FLAG_INFO = {
+    payment_untraceable:{level:0, noticed:"They want payment by gift card, wire, cryptocurrency, app, cash, or gold.", advice:"No real agency, bank, or company asks you to pay this way. These payments cannot be traced or undone. This alone is a near-certain sign of a scam.", key:true},
+    otp:{level:0, noticed:"They asked you to read back a security code or one-time passcode.", advice:"A one-time passcode is the key to your account. No legitimate organization will ever ask you to read one back. Never share it with anyone.", key:true},
+    remote_access:{level:0, noticed:"They asked to connect to or control your device.", advice:"Giving remote access lets a stranger steal your information and money. Real companies do not call out of the blue asking for this. Do not allow it.", key:true},
+    secrecy:{level:0, noticed:"They told you to keep it secret from family, your bank, or police.", advice:"Scammers demand secrecy so no one can warn you. Honest organizations never ask you to hide things from the people who protect you.", key:true},
+    safe_account:{level:0, noticed:"They told you to move your money to a \u201Csafe\u201D account, or to withdraw cash or buy gold.", advice:"No agency or bank will ever ask you to move money to a \u201Csafe account\u201D or to withdraw cash or buy gold to protect it. This is always a scam.", key:true},
+    romance_money:{level:0, noticed:"Someone you met online is asking you for money or to move funds.", advice:"Asking for money is the core of a romance scam. Do not send anything, and be very wary of someone who needs money but cannot meet you.", key:true},
+
+    threats:{level:1, noticed:"They are using threats or scary consequences.", advice:"Real agencies do not threaten you with instant arrest or demand immediate payment over the phone."},
+    urgency:{level:1, noticed:"They are pressuring you to act immediately.", advice:"Pressure to act \u201Cright now\u201D is a tactic to stop you thinking. A genuine matter can wait while you check it."},
+    too_good:{level:1, noticed:"There is an offer that sounds too good to be true.", advice:"If a prize, refund, or windfall arrives unexpectedly, treat it as bait. Real prizes never require a payment up front."},
+    guaranteed_returns:{level:1, noticed:"They are promising guaranteed or unusually high returns.", advice:"No real investment can guarantee high returns. This is the classic shape of an investment scam."},
+    pay_to_get:{level:1, noticed:"You must pay a fee or buy something first to claim it.", advice:"Having to pay money to receive a prize, a job, or an investment is a strong sign of a scam."},
+    personal_info:{level:1, noticed:"They asked for personal or financial details.", advice:"Be very cautious about sharing personal or financial details with anyone who contacted you, rather than the other way around."},
+    tech_popup:{level:1, noticed:"A pop-up or caller claims your device is infected.", advice:"Pop-ups and cold calls about viruses are fake. Real tech companies do not work this way. Close it and do not call the number."},
+    never_met:{level:1, noticed:"You have never met this person in real life.", advice:"Be very careful trusting, or sending anything to, someone you have only ever spoken to online."},
+    avoids_meeting:{level:1, noticed:"They keep avoiding meeting in person or on video.", advice:"Constant excuses to avoid a live video call are a common sign of a fake identity."},
+    delivery_pay:{level:1, noticed:"A delivery or toll message wants a payment or card details.", advice:"Real carriers and toll services do not collect card details through a link in a text. Check directly on the official website you type in yourself."},
+
+    threats_:{level:1},
+    unexpected:{level:2, noticed:"The contact was unexpected.", advice:"Take extra care with any call, message, or email you did not expect or ask for."},
+    link:{level:2, noticed:"They asked you to click a link or open an attachment.", advice:"Do not click links or open attachments in unexpected messages. Type the web address yourself instead."},
+    didnt_enter:{level:2, noticed:"You never entered this contest or applied for this.", advice:"You cannot win a contest you never entered, or be hired for a job you never applied to."},
+    family_emergency:{level:2, noticed:"A supposed relative or friend needs money urgently.", advice:"This is the grandparent or family-emergency scam. Hang up and call your relative back on the number you already have."},
+    voice_off:{level:2, noticed:"The voice or writing seemed slightly off.", advice:"Scammers can now copy voices using recordings. If something feels off, stop and verify another way."},
+    didnt_reach_person:{level:2, noticed:"You have not yet reached the real person directly.", advice:"Before doing anything, hang up and call the real person on a number you already have for them."},
+    couldnt_reach:{level:2, noticed:"You could not reach the real person to confirm.", advice:"Not being able to reach them is not proof of an emergency. Keep trying, and check with other family before acting."},
+    new_account:{level:2, noticed:"They are contacting you from a new or different number or account.", advice:"A hijacked or spoofed account is common. Confirm by reaching them on the contact you already trust."},
+    unusual_request:{level:2, noticed:"They are asking for something unusual for them.", advice:"An out-of-character request for money or details is a warning sign, even from a known contact."},
+    delivery_unexpected:{level:2, noticed:"You were not expecting this delivery or toll.", advice:"Unexpected delivery and toll texts are among the most common scams. Ignore the link."},
+    charity_pressure:{level:2, noticed:"An unsolicited charity is pressuring you to give now.", advice:"Genuine charities are happy for you to take your time and to donate through their official website."},
+    payment_unsure:{level:2, noticed:"It is unclear how they want to be paid.", advice:"Be cautious until you know. Unusual payment methods are a hallmark of scams."},
+    used_their_contact:{level:2, noticed:"You have only used the contact details they provided.", advice:"Numbers and links from the message itself can be fake. Always look up the organization independently."},
+    unverified:{level:2, noticed:"You have not yet checked them independently.", advice:"Before acting, look the organization up yourself and contact them through details you find on your own."},
+
+    verified:{level:3, noticed:"You checked independently and it was confirmed genuine.", advice:""},
+    reached_person:{level:3, noticed:"You reached the real person and they are fine.", advice:""}
+  };
+
+  var BANDS = [
+    {min:0,  max:20,  id:"low",      eyebrow:"Result",            title:"Low risk signals",                          line:"I didn't spot the usual warning signs of a scam here. That is reassuring, but it is not a guarantee.",        bg:"#E9F5EE", line2:"#CDE8D6", ink:"#1C6E45", accent:"#2E9E5B"},
+    {min:21, max:50,  id:"caution",  eyebrow:"Result",            title:"Some warning signs",                        line:"There are a few warning signs here. Slow down and check before you act, pay, or share anything.",            bg:"#FBF2DC", line2:"#EFDCAE", ink:"#8A5A06", accent:"#E0A52B"},
+    {min:51, max:80,  id:"high",     eyebrow:"Result",            title:"High risk: this is likely a scam",          line:"This has several strong signs of a scam. Do not pay or share anything until you have checked it carefully.",  bg:"#FBE9DE", line2:"#F1CDB8", ink:"#9A4318", accent:"#E0712E"},
+    {min:81, max:100, id:"veryhigh", eyebrow:"Result",            title:"Very high risk: almost certainly a scam",   line:"This closely matches the pattern of a scam. Do not pay, do not share information, and do not give anyone access.", bg:"#FBE3E1", line2:"#F2C4C0", ink:"#9A2222", accent:"#CE4040"}
+  ];
+
+  /* ============================================================
+     STATE + NAVIGATION
+     ============================================================ */
+  var state = { phase:"intro", channel:null, who:null, queue:[], qPos:0, answers:[] };
+  var navStack = [];
+
+  var app = document.getElementById("app");
+  var bar = document.getElementById("bar");
+
+  function snapshot(){
+    return JSON.parse(JSON.stringify({
+      phase:state.phase, channel:state.channel, who:state.who,
+      queue:state.queue, qPos:state.qPos, answers:state.answers
+    }));
+  }
+  function pushSnapshot(){ navStack.push(snapshot()); }
+  function restore(s){
+    state.phase=s.phase; state.channel=s.channel; state.who=s.who;
+    state.queue=s.queue; state.qPos=s.qPos; state.answers=s.answers;
+  }
+
+  function buildQueue(who){
+    var base = (SCENARIO_QUEUES[who] || SCENARIO_QUEUES.unknown).slice();
+    if(ALLOWED_LINK_CHANNELS.indexOf(state.channel) === -1){
+      base = base.filter(function(id){ return id !== "links"; });
+    }
+    return base;
+  }
+
+  /* ---------- progress ---------- */
+  function setProgress(){
+    var pct = 0;
+    if(state.phase==="intro") pct = 0;
+    else if(state.phase==="channel") pct = 6;
+    else if(state.phase==="who") pct = 14;
+    else if(state.phase==="q"){
+      var total = state.queue.length || 1;
+      pct = 14 + Math.round((state.qPos/total) * 82);
+    } else if(state.phase==="result") pct = 100;
+    bar.style.width = pct + "%";
+  }
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function chevron(){
+    return '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+  }
+  function backBtn(){
+    return '<div class="nav"><button class="back" id="backBtn" type="button">'
+      + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>'
+      + 'Back</button></div>';
+  }
+
+  function renderOptions(options){
+    var html = '<div class="options" role="group">';
+    for(var i=0;i<options.length;i++){
+      html += '<button class="opt" type="button" data-opt="'+i+'">'
+        + '<span class="lab">'+esc(options[i].label)+'</span>'+chevron()+'</button>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function renderQuestion(eyebrow, def, withBack){
+    var html = '<section class="screen card">';
+    html += '<span class="eyebrow">'+esc(eyebrow)+'</span>';
+    html += '<h2 class="qtext" tabindex="-1">'+esc(def.text)+'</h2>';
+    if(def.help) html += '<p class="help">'+esc(def.help)+'</p>';
+    html += renderOptions(def.options);
+    if(withBack) html += backBtn();
+    html += '</section>';
+    app.innerHTML = html;
+    attachOptions(def.options);
+    if(withBack) document.getElementById("backBtn").addEventListener("click", goBack);
+    focusHeading();
+  }
+
+  function focusHeading(){
+    var h = app.querySelector(".qtext, .verdict h2, #introTitle");
+    if(h){ try{ h.focus(); }catch(e){} }
+  }
+
+  function attachOptions(options){
+    var btns = app.querySelectorAll("[data-opt]");
+    btns.forEach(function(b){
+      b.addEventListener("click", function(){
+        var idx = parseInt(b.getAttribute("data-opt"),10);
+        handleSelect(options[idx]);
+      });
+    });
+  }
+
+  /* ---------- intro ---------- */
+  function renderIntro(){
+    var html = ''
+      + '<section class="screen card">'
+      + '<span class="eyebrow">Free &amp; private</span>'
+      + '<h2 class="qtext" id="introTitle" tabindex="-1">Not sure if it\u2019s real? Let\u2019s check together.</h2>'
+      + '<p class="intro-lead">Answer a few simple questions about the call, text, email, or message. '
+      + 'At the end you\u2019ll get a clear risk rating and plain advice on what to do next.</p>'
+      + '<ul class="intro-points">'
+        + introPoint(iconClock(), 'Takes about a minute. One question at a time.')
+        + introPoint(iconTap(), 'Just tap an answer to move forward. You can go back any time.')
+        + introPoint(iconLock(), 'Completely private. Nothing is saved or sent anywhere.')
+      + '</ul>'
+      + '<button class="cta" id="startBtn" type="button">Start the check</button>'
+      + '</section>';
+    app.innerHTML = html;
+    document.getElementById("startBtn").addEventListener("click", function(){
+      pushSnapshot();
+      state.phase="channel";
+      render();
+    });
+    focusHeading();
+  }
+  function introPoint(icon, text){
+    return '<li><span class="ic">'+icon+'</span><span>'+esc(text)+'</span></li>';
+  }
+
+  /* ---------- result ---------- */
+  function score(){
+    var raw=0, crit=0, flags=[];
+    for(var i=0;i<state.answers.length;i++){
+      var a=state.answers[i];
+      if(!a) continue;
+      raw += a.points;
+      if(a.critical) crit++;
+      if(a.flags){ for(var f=0;f<a.flags.length;f++) if(flags.indexOf(a.flags[f])===-1) flags.push(a.flags[f]); }
+    }
+    var pathMax=0;
+    for(var q=0;q<state.queue.length;q++){
+      var def=Q[state.queue[q]];
+      var best=0;
+      for(var o=0;o<def.options.length;o++) if(def.options[o].points>best) best=def.options[o].points;
+      pathMax += best;
+    }
+    var pct = pathMax>0 ? Math.round((raw/pathMax)*100) : 0;
+    if(pct<0) pct=0; if(pct>100) pct=100;
+    if(crit>=1) pct = Math.max(pct,85);
+    if(crit>=2) pct = Math.max(pct,95);
+    return {pct:pct, flags:flags, crit:crit};
+  }
+
+  function bandFor(pct){
+    for(var i=0;i<BANDS.length;i++) if(pct>=BANDS[i].min && pct<=BANDS[i].max) return BANDS[i];
+    return BANDS[BANDS.length-1];
+  }
+
+  function renderResult(){
+    var r = score();
+    var band = bandFor(r.pct);
+
+    // split flags
+    var risky=[], good=[];
+    r.flags.forEach(function(f){
+      var info=FLAG_INFO[f]; if(!info) return;
+      if(info.level===3) good.push(f); else risky.push(f);
+    });
+    risky.sort(function(a,b){ return (FLAG_INFO[a].level)-(FLAG_INFO[b].level); });
+
+    var levelClass=["crit","high","med","good"];
+
+    // findings list
+    var findings="";
+    if(risky.length===0){
+      findings += '<li class="good"><span class="dot"></span><span>Nothing alarming stood out in your answers.</span></li>';
+    } else {
+      risky.forEach(function(f){
+        var info=FLAG_INFO[f];
+        findings += '<li class="'+levelClass[info.level]+'"><span class="dot"></span><span>'+esc(info.noticed)+'</span></li>';
+      });
+    }
+    good.forEach(function(f){
+      var info=FLAG_INFO[f];
+      findings += '<li class="good"><span class="dot"></span><span>'+esc(info.noticed)+'</span></li>';
+    });
+
+    // actions: critical/key advice first, then other flag advice (deduped), then universals
+    var seen={}, keyActions=[], otherActions=[];
+    risky.forEach(function(f){
+      var info=FLAG_INFO[f];
+      if(!info.advice) return;
+      if(seen[info.advice]) return; seen[info.advice]=true;
+      if(info.key) keyActions.push(info.advice); else otherActions.push(info.advice);
+    });
+
+    var actions="";
+    keyActions.forEach(function(t){ actions += actionItem(t, true); });
+    // band lead-in for medium/low when there is little else
+    if(keyActions.length===0 && otherActions.length===0 && band.id==="low"){
+      actions += actionItem("No strong scam signals showed up, but stay careful. Scammers change their tactics often.", false);
+    }
+    otherActions.forEach(function(t){ actions += actionItem(t, false); });
+    // universal closing advice (always)
+    actions += actionItem("Before doing anything, stop and talk to someone you trust: a family member, a friend, or your bank.", false);
+    actions += actionItem("To check a company or agency, find their phone number yourself. Never use a number, link, or contact they gave you.", false);
+    if(r.pct>=21){
+      actions += actionItem("If you have already paid or shared details, contact your bank right away and report it to your local consumer protection or fraud authority.", false);
+    }
+
+    var pinStyle = '--vd-bg:'+band.bg+';--vd-line:'+band.line2+';--vd-ink:'+band.ink+';--vd-accent:'+band.accent+';';
+
+    var html = ''
+      + '<section class="screen" style="'+pinStyle+'">'
+      + '<div class="verdict">'
+        + '<div class="band-eyebrow">'+esc(band.eyebrow)+'</div>'
+        + '<h2 tabindex="-1">'+esc(band.title)+'</h2>'
+        + '<p>'+esc(band.line)+'</p>'
+        + '<div class="meter-wrap">'
+          + '<div class="meter-top"><span class="score">'+r.pct+'<small>/100</small></span><span class="of">scam risk score</span></div>'
+          + '<div class="meter" role="img" aria-label="Scam risk score '+r.pct+' out of 100"><span class="pin" id="pin"></span></div>'
+          + '<div class="meter-labels"><span>Looks safer</span><span>Very likely a scam</span></div>'
+        + '</div>'
+      + '</div>'
+      + '<div class="res-section"><h3>What stood out</h3><ul class="findings">'+findings+'</ul></div>'
+      + '<div class="res-section"><h3>What to do now</h3><ul class="actions">'+actions+'</ul></div>'
+      + '<p class="disclaimer">This tool gives guidance based on common scam patterns. It cannot say for certain whether something is a scam. When in doubt, treat it as one until you have checked it yourself through trusted contacts.</p>'
+      + '<div class="result-buttons">'
+        + '<button class="btn-secondary" id="againBtn" type="button">Check another message</button>'
+        + '<button class="cta" id="restartBtn" type="button" style="flex:1 1 auto;min-height:58px;">Start over</button>'
+      + '</div>'
+      + backBtn()
+      + '</section>';
+
+    app.innerHTML = html;
+    document.getElementById("againBtn").addEventListener("click", restart);
+    document.getElementById("restartBtn").addEventListener("click", restart);
+    document.getElementById("backBtn").addEventListener("click", goBack);
+    focusHeading();
+    // animate the meter pin
+    var pin=document.getElementById("pin");
+    if(pin){ requestAnimationFrame(function(){ requestAnimationFrame(function(){ pin.style.left=r.pct+"%"; }); }); }
+  }
+
+  function actionItem(text, isKey){
+    return '<li class="'+(isKey?'key':'')+'"><span class="ic">'
+      + (isKey?iconAlert():iconCheck())
+      + '</span><span>'+esc(text)+'</span></li>';
+  }
+
+  /* ============================================================
+     SELECTION HANDLERS
+     ============================================================ */
+  function handleSelect(option){
+    if(state.phase==="channel"){
+      pushSnapshot();
+      state.channel = option.value;
+      state.phase="who";
+      render();
+      return;
+    }
+    if(state.phase==="who"){
+      pushSnapshot();
+      state.who = option.value;
+      state.queue = buildQueue(option.value);
+      state.qPos = 0;
+      state.answers = [];
+      state.phase="q";
+      render();
+      return;
+    }
+    if(state.phase==="q"){
+      pushSnapshot();
+      state.answers[state.qPos] = {
+        points: option.points || 0,
+        flags: option.flags || [],
+        critical: !!option.critical
+      };
+      state.qPos++;
+      if(state.qPos >= state.queue.length){ state.phase="result"; }
+      render();
+      return;
+    }
+  }
+
+  function goBack(){
+    if(navStack.length===0){ return; }
+    restore(navStack.pop());
+    render();
+  }
+
+  function restart(){
+    navStack=[];
+    state={ phase:"intro", channel:null, who:null, queue:[], qPos:0, answers:[] };
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  /* ============================================================
+     MAIN RENDER SWITCH
+     ============================================================ */
+  function render(){
+    setProgress();
+    if(state.phase==="intro"){ renderIntro(); return; }
+    if(state.phase==="channel"){
+      renderQuestion("Step 1 of 2 \u00B7 first, the basics", {text:"How did they reach you?", options:CHANNELS}, true);
+      return;
+    }
+    if(state.phase==="who"){
+      renderQuestion("Step 2 of 2 \u00B7 first, the basics", {text:"Who do they say they are?", options:WHO}, true);
+      return;
+    }
+    if(state.phase==="q"){
+      var id = state.queue[state.qPos];
+      renderQuestion("A few questions about what happened", Q[id], true);
+      return;
+    }
+    if(state.phase==="result"){ renderResult(); return; }
+  }
+
+  /* ---------- icons ---------- */
+  function iconClock(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';}
+  function iconTap(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 1 1 4 0v5"/><path d="M13 11V8a2 2 0 1 1 4 0v6a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2-3a2 2 0 0 1 3-2l1 1"/></svg>';}
+  function iconLock(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';}
+  function iconCheck(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>';}
+  function iconAlert(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4"/><path d="M12 17.5v.01"/></svg>';}
+
+  /* ---------- coming-soon footer links ---------- */
+  document.querySelectorAll("a[data-soon]").forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); });
+  });
+
+  /* boot */
+  render();
+})();
+</script>
+</body>
+</html>
